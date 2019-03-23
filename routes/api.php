@@ -16,3 +16,28 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/**
+ * Buyer
+ */
+Route::resource('buyers', 'Buyer/BuyerController', ['only' => ['index', 'show']]);
+/**
+ * Categories
+ */
+Route::resource('categories', 'Category/CategoryController', ['except' => ['create', 'edit']]);
+/**
+ * Product
+ */
+Route::resource('products', 'Product/ProductController', ['only' => ['index', 'show']]);
+/**
+ * seller
+ */
+Route::resource('seller', 'Sellter/SellterController', ['only' => ['index', 'show']]);
+/**
+ * Transaction
+ */
+Route::resource('transactions', 'TranSaction/TranSactionController', ['only' => ['index', 'show']]);
+/**
+ * User
+ */
+Route::resource('user', 'User/UserController', ['except' => ['create', 'edit']]);
