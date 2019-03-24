@@ -4,7 +4,7 @@ use App\User;
 use App\Category;
 use App\Transaction;
 use App\Product;
-use App\Sellers;
+use App\Seller;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 

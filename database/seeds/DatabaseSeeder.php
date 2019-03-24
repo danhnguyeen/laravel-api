@@ -6,7 +6,7 @@ use App\User;
 use App\Category;
 use App\Transaction;
 use App\Product;
-use App\Sellers;
+use App\Seller;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        DB::statement('SET FOREIGN_KEY_CHECK = 0');
+    { 
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         
         User::truncate();
         Product::truncate();
