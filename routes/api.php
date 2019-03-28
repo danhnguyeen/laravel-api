@@ -32,7 +32,7 @@ Route::resource('products', 'Product\ProductController', ['only' => ['index', 's
 /**
  * seller
  */
-Route::resource('seller', 'Sellter\SellterController', ['only' => ['index', 'show']]);
+Route::resource('sellers', 'Seller\SellerController', ['only' => ['index', 'show']]);
 /**
  * Transaction
  */
