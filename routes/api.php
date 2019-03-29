@@ -37,6 +37,9 @@ Route::resource('sellers', 'Seller\SellerController', ['only' => ['index', 'show
  * Transaction
  */
 Route::resource('transactions', 'TranSaction\TranSactionController', ['only' => ['index', 'show']]);
+// transactions/{transaction_id}/categories
+Route::resource('transactions.categories', 'TranSaction\TransactionCategoryController', ['only' => ['index']]);
+Route::resource('transactions.sellers', 'TranSaction\TransactionSellerController', ['only' => ['index']]);
 /**
  * User
  */
