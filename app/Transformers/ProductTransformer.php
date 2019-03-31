@@ -20,11 +20,11 @@ class ProductTransformer extends TransformerAbstract
             'detail' => (string)$product->description,
             'stock' => (int)$product->quantity,
             'situation' => (string)$product->status,
-            'picture' => url("img/{$product->status}"),
+            'picture' => isset($product->image) ? url("img/{$product->image}") : null,
             'seller' => (int)$product->seller_id,
-            'createdAt' => $product->created_at,
-            'updatedAt' => $product->updated_at,
-            'deletedAt' => $product->deleted_at
+            'createdAt' => (string)$product->created_at,
+            'updatedAt' => (string)$product->updated_at,
+            'deletedAt' => isset($product->deleted_at) ? (string)$product->deleted_at : null
         ];
     }
 }

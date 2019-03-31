@@ -19,9 +19,9 @@ class SellerTransformer extends TransformerAbstract
             'name' => (string)$seller->name,
             'email' => (string)$seller->email,
             'isVerified' => (int)$seller->verified,
-            'createdAt' => $seller->created_at,
-            'updatedAt' => $seller->updated_at,
-            'deletedAt' => $seller->deleted_at
+            'createdAt' => (string)$seller->created_at,
+            'updatedAt' => (string)$seller->updated_at,
+            'deletedAt' => isset($seller->deleted_at) ? (string)$seller->deleted_at : null
         ];
     }
 }

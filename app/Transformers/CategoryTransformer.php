@@ -18,9 +18,9 @@ class CategoryTransformer extends TransformerAbstract
             'id' => (int)$category->id,
             'title' => (string)$category->name,
             'detail' => (string)$category->description,
-            'createdAt' => $category->created_at,
-            'updatedAt' => $category->updated_at,
-            'deletedAt' => $category->deleted_at
+            'createdAt' => (string)$category->created_at,
+            'updatedAt' => (string)$category->updated_at,
+            'deletedAt' => isset($category->deleted_at) ? (string)$category->deleted_at : null
         ];
     }
 }
