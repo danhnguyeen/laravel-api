@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Category;
 use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use App\Transformers\CategoryTransformer;
 
 class CategoryController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('transform.input:'. CategoryTransformer::class)->only(['store', 'update']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,9 +20,9 @@ class CategoryController extends ApiController
      */
     public function index()
     {
-        $categories = Category::all();
+        return $this->getAll(Category::class);
 
-        return $this->showAll($categories);
+        // return $this->showAll($categories);
     }
 
     /**
