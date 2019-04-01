@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ApiController;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
     /**
      * Create user
@@ -94,6 +94,9 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        $user = $request->user();
+        $user->roles = ['admin'];
+        $user->avatar = 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif';
+        return response()->json(['data' => $user]);
     }
 }
