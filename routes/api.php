@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Mail\MakeAppointment;
+use Illuminate\Support\Facades\Mail;
+use Laravel\Passport\Http\Controllers\AccessTokenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +18,11 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/send-mail', function () {
+    Mail::to('danh.nguyen@amagumolabs.com')->queue(new MakeAppointment());
+    return response()->json(['success' => true]);
 });
 
 Route::group([
