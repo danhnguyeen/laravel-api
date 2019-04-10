@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\ExampleEvent;
 use Illuminate\Http\Request;
 use App\Mail\MakeAppointment;
 use Illuminate\Support\Facades\Mail;
@@ -18,6 +19,10 @@ use Laravel\Passport\Http\Controllers\AccessTokenController;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('test-broadcast', function(){
+    broadcast(new ExampleEvent)->toOthers();
 });
 
 Route::get('/send-mail', function () {
