@@ -20,10 +20,8 @@ class GetProductsTest extends TestCase
      */
     public function testGetProducts()
     {
-        $user = User::find(101);
-
         $response = $this->actingAsAdmin()
-                        ->json('GET', '/api/products');
+                        ->get('/api/products');
 
         $response
             ->assertStatus(200)
@@ -48,7 +46,8 @@ class GetProductsTest extends TestCase
      */
     public function testFindProduct()
     {
-        $response = $this->json('GET', '/api/products/invail-id');
+        $response = $this->actingAsAdmin()
+                        ->get('/api/products/invail-id');
 
         $response
             ->assertStatus(404);
@@ -60,7 +59,8 @@ class GetProductsTest extends TestCase
      * @return void
      */
     public function testCreateProductValidation() {
-        $response = $this->json('POST', '/api/sellers/1/products');
+        $response = $this->actingAsAdmin()
+                        ->post('/api/sellers/1/products');
 
         $response
             ->assertStatus(422)
@@ -72,17 +72,23 @@ class GetProductsTest extends TestCase
                 ]
             ]);
     }
-
-    public function testCreateProduct() {
+    /**
+     * @group product-create
+     *
+     * @return void
+     */
+    public function testShouldCreateProduct() {
         Storage::fake('products');
         $file = UploadedFile::fake()->image('product.jpg');
 
-        $response = $this->json('POST', '/api/sellers/1/products', [
-            'title' => 'Product Test refresh',
+        $product = [
+            'title' => '_product_test',
             'detail' => 'Product Desc',
             'stock' => 1,
             'image' => $file
-        ]);
+        ];
+        $response = $this->actingAsAdmin()
+                        ->post("/api/sellers/1/products", $product);
 
         // Storage::disk('products')->assertExists($file->name());
 
@@ -101,10 +107,26 @@ class GetProductsTest extends TestCase
             ])
             ->assertJson([
                 'data' => [
-                    'title' => 'Product Test refresh',
-                    'detail' => 'Product Desc',
-                    'stock' => 1
+                    'title' => $product['title'],
+                    'detail' => $product['detail'],
+                    'stock' => $product['stock']
                 ]
             ]);
+
+            $this->assertDatabaseHas('products', ['name' => $product['title']]);;
+    }
+    /**
+     * @group product-delete
+     *
+     * @return void
+     */
+    public function testShouldDeleteProduct() {
+        $response = $this->actingAsAdmin()
+                        ->delete("/api/sellers/1/products/1");
+
+        $response
+            ->assertStatus(200);
+            
+        $this->assertSoftDeleted('products', ['id' => 1]);;
     }
 }
