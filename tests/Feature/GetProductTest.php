@@ -7,10 +7,11 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GetProductsTest extends TestCase
 {
-    // use RefreshDatabase;
+    use DatabaseTransactions;
     /**
      * @group get-products
      *
@@ -43,10 +44,10 @@ class GetProductsTest extends TestCase
      */
     public function testFindProduct()
     {
-        $response = $this->json('GET', '/api/products/invail');
+        $response = $this->json('GET', '/api/products/1');
 
         $response
-            ->assertStatus(404);
+            ->assertStatus(200);
     }
     public function testCreateProduct() {
         Storage::fake('products');

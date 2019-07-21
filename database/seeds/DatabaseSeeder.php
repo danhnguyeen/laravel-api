@@ -25,10 +25,10 @@ class DatabaseSeeder extends Seeder
         Category::truncate();
         DB::table('category_product')->truncate();
 
-        $usersQuantity = 500;
-        $categoriesQuantity = 30;
-        $productsQuantity = 500;
-        $transactionsQuantity = 500;
+        $usersQuantity = 100;
+        $categoriesQuantity = 15;
+        $productsQuantity = 150;
+        $transactionsQuantity = 250;
 
         factory(User::class, $usersQuantity)->create();
         factory(Category::class, $categoriesQuantity)->create();
