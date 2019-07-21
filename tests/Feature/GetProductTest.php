@@ -44,11 +44,31 @@ class GetProductsTest extends TestCase
      */
     public function testFindProduct()
     {
-        $response = $this->json('GET', '/api/products/1');
+        $response = $this->json('GET', '/api/products/invail-id');
 
         $response
-            ->assertStatus(200);
+            ->assertStatus(404);
     }
+    /**
+     * Test validation when create product
+     * @group prdoduct-create-validation
+     *
+     * @return void
+     */
+    public function testCreateProductValidation() {
+        $response = $this->json('POST', '/api/sellers/1/products');
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                'error' => [
+                    'title',
+                    'detail',
+                    'stock'
+                ]
+            ]);
+    }
+
     public function testCreateProduct() {
         Storage::fake('products');
         $file = UploadedFile::fake()->image('product.jpg');
