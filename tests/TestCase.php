@@ -17,10 +17,16 @@ abstract class TestCase extends BaseTestCase
      * @param  string|null  $driver
      * @return $this
      */
-    public function actingAsAdmin($driver = 'api')
+    protected function actingAsAdmin($driver = 'api')
     {
         $user = User::find(101);
         
         return $this->be($user, $driver);
+    }
+    protected function signIn($user = null, $driver = 'api')
+    {
+        $user = $user ? : factory(User::class)->make();
+
+        return $this->actingAs($user, $driver);
     }
 }

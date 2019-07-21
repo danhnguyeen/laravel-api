@@ -36,7 +36,7 @@ class ProductsTest extends TestCase
      */
     public function testGetProducts()
     {
-        $response = $this->actingAsAdmin()
+        $response = $this->signIn($this->seller)
                         ->get('/api/products');
 
         $response->assertStatus(200)
@@ -166,5 +166,6 @@ class ProductsTest extends TestCase
         $response->assertStatus(200);
             
         $this->assertSoftDeleted('products', ['id' => $this->product->id]);
+        // Storage::assertMissing($this->product->image);
     }
 }
