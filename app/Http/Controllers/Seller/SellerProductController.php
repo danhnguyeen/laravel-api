@@ -107,7 +107,7 @@ class SellerProductController extends ApiController
      */
     public function destroy(Request $request, Seller $seller, Product $product)
     {
-        // $this->checkSeller($seller, $product);
+        $this->checkSeller($seller, $product);
 
         $product->delete();
         Storage::delete($product->image);

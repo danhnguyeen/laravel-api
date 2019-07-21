@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use App\Product;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +14,21 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class ProductsTest extends TestCase
 {
     use DatabaseTransactions;
+
+    protected $product;
+    protected $seller;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        // your init data is here
+        $this->seller = factory(User::class)->create();
+
+        $this->product = factory(Product::class)->create([
+            'seller_id' => $this->seller->id
+        ]);
+    }
+
     /**
      * @group product-list
      *
@@ -58,7 +74,7 @@ class ProductsTest extends TestCase
     public function testFindProduct()
     {
         $response = $this->actingAsAdmin()
-                        ->get('/api/products/1');
+                        ->get("/api/products/{$this->product->id}");
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -71,6 +87,12 @@ class ProductsTest extends TestCase
                     'createdAt',
                     'updatedAt',
                 ]
+            ])
+            ->assertJson([
+                'data' => [
+                    'id' => $this->product->id,
+                    'title' => $this->product->name
+                ]
             ]);
     }
     /**
@@ -81,7 +103,7 @@ class ProductsTest extends TestCase
      */
     public function testCreateProductValidation() {
         $response = $this->actingAsAdmin()
-                        ->post('/api/sellers/1/products');
+                        ->post("/api/sellers/{$this->seller->id}/products");
 
         $response->assertStatus(422)
             ->assertJsonStructure([
@@ -108,7 +130,7 @@ class ProductsTest extends TestCase
             'image' => $file
         ];
         $response = $this->actingAsAdmin()
-                        ->post("/api/sellers/1/products", $product);
+                        ->post("/api/sellers/{$this->seller->id}/products", $product);
 
         // Storage::disk('products')->assertExists($file->name());
 
@@ -141,10 +163,10 @@ class ProductsTest extends TestCase
      */
     public function testShouldDeleteProduct() {
         $response = $this->actingAsAdmin()
-                        ->delete("/api/sellers/1/products/1");
+                        ->delete("/api/sellers/{$this->seller->id}/products/{$this->product->id}");
 
         $response->assertStatus(200);
             
-        $this->assertSoftDeleted('products', ['id' => 1]);;
+        $this->assertSoftDeleted('products', ['id' => $this->product->id]);
     }
 }
