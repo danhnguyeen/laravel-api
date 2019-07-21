@@ -22,7 +22,7 @@ class GetProductsTest extends TestCase
     {
         $user = User::find(101);
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAsAdmin()
                         ->json('GET', '/api/products');
 
         $response
