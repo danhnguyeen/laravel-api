@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +20,10 @@ class GetProductsTest extends TestCase
      */
     public function testGetProducts()
     {
-        $response = $this->json('GET', '/api/products');
+        $user = User::find(101);
+
+        $response = $this->actingAs($user, 'api')
+                        ->json('GET', '/api/products');
 
         $response
             ->assertStatus(200)
