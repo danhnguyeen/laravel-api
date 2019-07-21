@@ -10,11 +10,11 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class GetProductsTest extends TestCase
+class ProductsTest extends TestCase
 {
     use DatabaseTransactions;
     /**
-     * @group get-products
+     * @group product-list
      *
      * @return void
      */
@@ -23,8 +23,7 @@ class GetProductsTest extends TestCase
         $response = $this->actingAsAdmin()
                         ->get('/api/products');
 
-        $response
-            ->assertStatus(200)
+        $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
                     '*' => [
@@ -49,8 +48,7 @@ class GetProductsTest extends TestCase
         $response = $this->actingAsAdmin()
                         ->get('/api/products/invail-id');
 
-        $response
-            ->assertStatus(404);
+        $response->assertStatus(404);
     }
     /**
      * Test validation when create product
@@ -62,8 +60,7 @@ class GetProductsTest extends TestCase
         $response = $this->actingAsAdmin()
                         ->post('/api/sellers/1/products');
 
-        $response
-            ->assertStatus(422)
+        $response->assertStatus(422)
             ->assertJsonStructure([
                 'error' => [
                     'title',
@@ -92,8 +89,7 @@ class GetProductsTest extends TestCase
 
         // Storage::disk('products')->assertExists($file->name());
 
-        $response
-            ->assertStatus(201)
+        $response->assertStatus(201)
             ->assertJsonStructure([
                 'data' => [
                     'id',
@@ -124,8 +120,7 @@ class GetProductsTest extends TestCase
         $response = $this->actingAsAdmin()
                         ->delete("/api/sellers/1/products/1");
 
-        $response
-            ->assertStatus(200);
+        $response->assertStatus(200);
             
         $this->assertSoftDeleted('products', ['id' => 1]);;
     }
