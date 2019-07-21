@@ -108,9 +108,9 @@ class ProductsTest extends TestCase
         $response->assertStatus(422)
             ->assertJsonStructure([
                 'error' => [
-                    'title',
-                    'detail',
-                    'stock'
+                    'name',
+                    'description',
+                    'quantity'
                 ]
             ]);
     }
@@ -123,16 +123,14 @@ class ProductsTest extends TestCase
         Storage::fake('products');
         $file = UploadedFile::fake()->image('product.jpg');
 
-        $product = [
-            'title' => '_product_test',
-            'detail' => 'Product Desc',
-            'stock' => 1,
+        $product = factory(Product::class)->make([
             'image' => $file
-        ];
+        ]);
+        
         $response = $this->actingAsAdmin()
-                        ->post("/api/sellers/{$this->seller->id}/products", $product);
+                        ->post("/api/sellers/{$this->seller->id}/products", $product->toArray());
 
-        // Storage::disk('products')->assertExists($file->name());
+        Storage::assertExists($file->hashName());
 
         $response->assertStatus(201)
             ->assertJsonStructure([
@@ -148,13 +146,13 @@ class ProductsTest extends TestCase
             ])
             ->assertJson([
                 'data' => [
-                    'title' => $product['title'],
-                    'detail' => $product['detail'],
-                    'stock' => $product['stock']
+                    'title' => $product->name,
+                    'stock' => $product->quantity,
+                    'seller' => $this->seller->id
                 ]
             ]);
 
-            $this->assertDatabaseHas('products', ['name' => $product['title']]);;
+            $this->assertDatabaseHas('products', ['name' => $product->name]);;
     }
     /**
      * @group product-delete
