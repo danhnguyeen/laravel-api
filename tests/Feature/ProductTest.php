@@ -39,16 +39,39 @@ class ProductsTest extends TestCase
             ]);
     }
     /**
-     * @group product-not-found
+     * @group product-find-id
+     *
+     * @return void
+     */
+    public function testProductNotFound()
+    {
+        $response = $this->actingAsAdmin()
+                        ->get('/api/products/invail-id');
+
+        $response->assertStatus(404);
+    }
+    /**
+     * @group product-find-id
      *
      * @return void
      */
     public function testFindProduct()
     {
         $response = $this->actingAsAdmin()
-                        ->get('/api/products/invail-id');
+                        ->get('/api/products/1');
 
-        $response->assertStatus(404);
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'title',
+                    'detail',
+                    'picture',
+                    'stock',
+                    'createdAt',
+                    'updatedAt',
+                ]
+            ]);
     }
     /**
      * Test validation when create product
